@@ -10,6 +10,7 @@ from tkinter import messagebox
 import cv2 as cv2
 import matplotlib.pyplot as plt
 import os
+from NNTrain import nntrain
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
@@ -40,6 +41,7 @@ def pathSave():
 
 def pathTrain():
     messagebox.showinfo("Treinando", "Treinando Classificadores");
+    nntrain()
 
 def pathResize():
     global app
