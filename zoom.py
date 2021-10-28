@@ -1,9 +1,8 @@
-import math
-import warnings
-import tkinter as tk
-
 from tkinter import ttk
 from PIL import Image, ImageTk
+import tkinter as tk
+import warnings
+import math
 
 class AutoScrollbar(ttk.Scrollbar):
     # Uma barra de scroll que se esconde se não for necessária
@@ -63,7 +62,7 @@ class CanvasImage:
         self.temp22 = []
 
         # Vê se a imagem é muito grande
-        self.__huge = False 
+        self.__huge = False
         self.__huge_size = 14000  # Define o tamanho de uma imagem grande
         self.__band_width = 1024  # largura do tile
         Image.MAX_IMAGE_PIXELS = 1000000000  # não mostra o erro DecompressionBombError
@@ -136,6 +135,7 @@ class CanvasImage:
         # Função Dummy para redesenhar a figura nas classes filhas
         pass
 
+
     def grid(self, **kw):
         self.__imframe.grid(**kw)
         self.__imframe.grid(sticky='nswe')
@@ -154,7 +154,7 @@ class CanvasImage:
         self.__show_image()
 
     def __scroll_y(self, *args, **kwargs):
-         # Scroll verticalmente e redesenha a imagem
+        # Scroll verticalmente e redesenha a imagem
         self.canvas.yview(*args)  # scroll vertical
         self.__show_image()
 
@@ -170,13 +170,13 @@ class CanvasImage:
         box_scroll = [min(box_img_int[0], box_canvas[0]), min(box_img_int[1], box_canvas[1]),
                       max(box_img_int[2], box_canvas[2]), max(box_img_int[3], box_canvas[3])]
         # Parte horizontal da imagem que é visivel
-        if  box_scroll[0] == box_canvas[0] and box_scroll[2] == box_canvas[2]:
-            box_scroll[0]  = box_img_int[0]
-            box_scroll[2]  = box_img_int[2]
+        if box_scroll[0] == box_canvas[0] and box_scroll[2] == box_canvas[2]:
+            box_scroll[0] = box_img_int[0]
+            box_scroll[2] = box_img_int[2]
         # Parte vertical da imagem que é visivel
-        if  box_scroll[1] == box_canvas[1] and box_scroll[3] == box_canvas[3]:
-            box_scroll[1]  = box_img_int[1]
-            box_scroll[3]  = box_img_int[3]
+        if box_scroll[1] == box_canvas[1] and box_scroll[3] == box_canvas[3]:
+            box_scroll[1] = box_img_int[1]
+            box_scroll[3] = box_img_int[3]
         # Converte a região do scroll em uma tupla e int
         self.canvas.configure(scrollregion=tuple(map(int, box_scroll)))  # Define a região de scroll
         x1 = max(box_canvas[0] - box_image[0], 0)  # pega as coordenadas x1, x2, y1, y2
@@ -196,13 +196,13 @@ class CanvasImage:
                 image = self.__image.crop((int(x1 / self.imscale), 0, int(x2 / self.imscale), h))
             else:  # mostra a imagem original
                 image = self.__pyramid[max(0, self.__curr_img)].crop(  # Corta a imagem atual da piramide
-                                    (int(x1 / self.__scale), int(y1 / self.__scale),
-                                     int(x2 / self.__scale), int(y2 / self.__scale)))
+                    (int(x1 / self.__scale), int(y1 / self.__scale),
+                     int(x2 / self.__scale), int(y2 / self.__scale)))
 
             imagetk = ImageTk.PhotoImage(image.resize((int(x2 - x1), int(y2 - y1)), self.__filter))
             imageid = self.canvas.create_image(max(box_canvas[0], box_img_int[0]),
-                                                max(box_canvas[1], box_img_int[1]),
-                                                anchor='nw', image=imagetk)
+                                               max(box_canvas[1], box_img_int[1]),
+                                               anchor='nw', image=imagetk)
             self.canvas.lower(imageid)  # Coloca a imagem no background
             self.canvas.imagetk = imagetk  # Mantem uma referencia extra para prevenir o garbage-collector
             self.backup = image.resize((int(x2 - x1), int(y2 - y1)))
@@ -230,12 +230,12 @@ class CanvasImage:
         if event.delta == -120:  # Tira zoom
             if round(self.__min_side * self.imscale) < 30: return  # Image é menor que 30 pixels
             self.imscale /= self.__delta
-            scale        /= self.__delta
+            scale /= self.__delta
         if event.delta == 120:  # Zoom
             i = min(self.canvas.winfo_width(), self.canvas.winfo_height()) >> 1
             if i < self.imscale: return  # 1 pixel é maior que a area visivel
             self.imscale *= self.__delta
-            scale        *= self.__delta
+            scale *= self.__delta
         # Pega a imagem apropriada da piramide
         k = self.imscale * self.__ratio  # Coeficiente temporario
         self.__curr_img = min((-1) * int(math.log(k, self.__reduction)), len(self.__pyramid) - 1)
@@ -257,8 +257,8 @@ class CanvasImage:
                 self.canvas.delete(i)
 
             scale = self.imscale * self.__ratio
-            #Pegar o x, y do canvas pra resolver essa ultima parte
-            image = self.crop((int(self.x-64), int(self.y-64), int(self.x+64), int(self.y+64)))
+            # Pegar o x, y do canvas pra resolver essa ultima parte
+            image = self.crop((int(self.x - 64), int(self.y - 64), int(self.x + 64), int(self.y + 64)))
             image.save('temp.png')
             self.verifica = True
             self.destroy()
@@ -271,19 +271,19 @@ class CanvasImage:
             self.__tile[1][3] = band  # Define a altura do tile
             self.__tile[2] = self.__offset + self.imwidth * bbox[1] * 3  # Atribui o offset do tile
             self.__image.close()
-            self.__image = Image.open(self.path) 
+            self.__image = Image.open(self.path)
             self.__image.size = (self.imwidth, band)  # Coloca o size do tile
             self.__image.tile = [self.__tile]
             return self.__image.crop((bbox[0], 0, bbox[2], band))
         else:  # Imagem esta na RAM
             print('oi', self.backup)
-            #self.__pyramid[0] = self.backup
+            # self.__pyramid[0] = self.backup
             for i in self.__pyramid:
                 print(i)
             return self.__pyramid[0].crop(bbox)
 
     def destroy(self):
-        #Destructor
+        # Destructor
         self.__image.close()
         map(lambda i: i.close, self.__pyramid)  # Fecha todas as imagens na pirâmide
         del self.__pyramid[:]  # Deleta a lista de pirâmides
@@ -299,4 +299,3 @@ class MainWindow(ttk.Frame):
         self.master.columnconfigure(0, weight=1)
         self.canvas = CanvasImage(self.master, path)
         self.canvas.grid(row=0, column=0)  # show widget
-
