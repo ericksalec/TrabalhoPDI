@@ -3,6 +3,7 @@ import tkinter as tk
 from zoom import MainWindow
 import easygui
 import unicodedata
+import dnn
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
@@ -25,6 +26,7 @@ def pathClassify():
     return
 
 def pathTrain():
+    dnn.nntrain()
     return
 
 filepath = 'dot.png'
