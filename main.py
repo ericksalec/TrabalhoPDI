@@ -3,7 +3,7 @@ import tkinter as tk
 from zoom import MainWindow
 import easygui
 import unicodedata
-import dnn
+import nn
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
@@ -26,7 +26,7 @@ def pathClassify():
     return
 
 def pathTrain():
-    dnn.nntrain()
+    nn.nntrain()
     return
 
 filepath = 'dot.png'
@@ -49,7 +49,7 @@ menubar.add_cascade(label="File", menu=opcoesFile)
 
 opcoesOCR = tk.Menu(menubar, tearoff=0)
 opcoesOCR.add_command(label="Classificar", command=pathClassify)
-opcoesOCR.add_cascade(label="Treinar", command=pathTrain)
+opcoesOCR.add_command(label="Treinar", command=pathTrain)
 menubar.add_cascade(label="OCR", menu=opcoesOCR)
 
 optionVar = tk.StringVar(menubar)
