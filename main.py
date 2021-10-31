@@ -4,6 +4,11 @@ from zoom import MainWindow
 import easygui
 import unicodedata
 import nn
+from tkinter import messagebox
+
+#Libs usadas para os testes:
+
+#Fim libs usadas para teste
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
@@ -23,10 +28,19 @@ def pathSair():
     master_window.destroy()
 
 def pathClassify():
+    if enteredImage:
+        if nntrained:
+            digito = nn.nnclassify(filepath)
+            print(digito)
+        else:
+            messagebox.showerror("Erro", "Execute o treinamento primeiro")
+    else:
+        messagebox.showerror("Erro", "Abra uma imagem primeiro")
     return
 
 def pathTrain():
-    nn.nntrain()
+    global nntrained
+    nntrained = nn.nntrain()
     return
 
 filepath = 'dot.png'
@@ -35,7 +49,7 @@ enteredImage = False
 hasBaseImage = False
 changeZoom = True
 app = None
-modeloTreinado = None
+nntrained = False
 
 master_window = tk.Tk()
 master_window.title("Menu")
