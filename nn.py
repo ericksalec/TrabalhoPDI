@@ -1,4 +1,6 @@
 import tensorflow as tf
+import numpy as np
+import cv2
 
 def nntrain():
     #Carrega a base de dados MNIST internamente pela biblioteca tensorflow
@@ -35,6 +37,17 @@ def nntrain():
 
     #Salva o modelo criado para ser usado posteriormente
     model.save('nn.model')
+
+    return True
+
+def nnclassify(filepath):
+    test_image = cv2.imread(filepath)[:, :, 0]
+    test_image = np.invert(np.array([test_image]))
+    model = tf.keras.models.load_model('nn.model')
+    prediction = model.predict(test_image)
+    return np.argmax(prediction)
+
+
 
 
 
