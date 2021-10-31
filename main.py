@@ -6,6 +6,7 @@ import unicodedata
 import nn
 from tkinter import messagebox
 from charSeparation import separa
+import svm
 
 #Libs usadas para os testes:
 
@@ -29,9 +30,9 @@ def pathImage():
 def pathSair():
     master_window.destroy()
 
-def pathClassify():
+def pathClassifyNN():
     if enteredImage:
-        if nntrained:
+        if nnTrained:
             digito = nn.nnclassify(filepath)
             print(digito)
         else:
@@ -40,9 +41,24 @@ def pathClassify():
         messagebox.showerror("Erro", "Abra uma imagem primeiro")
     return
 
-def pathTrain():
-    global nntrained
-    nntrained = nn.nntrain()
+def pathClassifySVM():
+    if enteredImage:
+        if svmTrained:
+            messagebox.showerror("Erro", "Ainda não foi criado modelo de previsão")
+        else:
+            messagebox.showerror("Erro", "Execute o treinamento primeiro")
+    else:
+        messagebox.showerror("Erro", "Abra uma imagem primeiro")
+    return
+
+def pathTrainNN():
+    global nnTrained
+    nnTrained = nn.nntrain()
+    return
+
+def pathTrainSVM():
+    global svmTrained
+    svmTrained = svm.svmtrain()
     return
 
 filepath = 'dot.png'
@@ -51,7 +67,8 @@ enteredImage = False
 hasBaseImage = False
 changeZoom = True
 app = None
-nntrained = False
+nnTrained = False
+svmTrained = False
 
 master_window = tk.Tk()
 master_window.title("Menu")
@@ -63,9 +80,17 @@ opcoesFile.add_command(label='Abrir', command=pathImage)
 opcoesFile.add_command(label="Sair", command=pathSair)
 menubar.add_cascade(label="File", menu=opcoesFile)
 
+opcoesClassificacao = tk.Menu(menubar, tearoff=0)
+opcoesClassificacao.add_command(label='SVM', command=pathClassifySVM)
+opcoesClassificacao.add_command(label="Rede Neural", command=pathClassifyNN)
+
+opcoesTreinamento = tk.Menu(menubar, tearoff=0)
+opcoesTreinamento.add_command(label='SVM', command=pathTrainSVM)
+opcoesTreinamento.add_command(label="Rede Neural", command=pathTrainNN)
+
 opcoesOCR = tk.Menu(menubar, tearoff=0)
-opcoesOCR.add_command(label="Classificar", command=pathClassify)
-opcoesOCR.add_command(label="Treinar", command=pathTrain)
+opcoesOCR.add_cascade(label="Classificar", menu=opcoesClassificacao)
+opcoesOCR.add_cascade(label="Treinar", menu=opcoesTreinamento)
 menubar.add_cascade(label="OCR", menu=opcoesOCR)
 
 optionVar = tk.StringVar(menubar)
