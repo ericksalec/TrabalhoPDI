@@ -5,6 +5,7 @@ import easygui
 import unicodedata
 import nn
 from tkinter import messagebox
+from charSeparation import separa
 
 #Libs usadas para os testes:
 
@@ -21,6 +22,7 @@ def pathImage():
     enteredImage = True
     hasBaseImage = True
     baseImage = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
+    separa(baseImage)
     app = MainWindow(group1, filepath)
 
 
