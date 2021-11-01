@@ -1,6 +1,9 @@
 easygui==0.98.2
+imutils==0.5.4
+matplotlib==3.3.3
 numpy==1.21.3
 opencv_python==4.5.1.48
+pandas==1.1.4
 Pillow==8.4.0
-tensorflow==2.6.0
-imutils==0.5.4
+scikit_learn==1.0.1
+tensorflow==2.5.1
