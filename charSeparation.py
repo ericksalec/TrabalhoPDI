@@ -45,17 +45,17 @@ def separa(image):
 			# pega o tamanho da imagem após o otsu e aplica um rezise proporcional
 			(tH, tW) = thresh.shape
 			if tW > tH:
-				thresh = imutils.resize(thresh, width=32)
+				thresh = imutils.resize(thresh, width=28)
 			else:
-				thresh = imutils.resize(thresh, height=32)
+				thresh = imutils.resize(thresh, height=28)
 
 			#escreve as imagens no diretório. o nome do arquivo será composto de informações uteis para quando recuperarmos no futuro
 			(tH, tW) = thresh.shape
-			dX = int(max(0, 32 - tW) / 2.0)
-			dY = int(max(0, 32 - tH) / 2.0)
+			dX = int(max(0, 28 - tW) / 2.0)
+			dY = int(max(0, 28 - tH) / 2.0)
 
 			padded = cv2.copyMakeBorder(thresh, top=dY, bottom=dY,
 										left=dX, right=dX, borderType=cv2.BORDER_CONSTANT,
 										value=(0, 0, 0))
-			padded = cv2.resize(padded, (32, 32))
+			padded = cv2.resize(padded, (28, 28))
 			cv2.imwrite("./imagens/y=" + str(y) + "-h=" + str(h) + "-x=" + str(x) + "-w=" + str(w) + ".jpg", padded)
