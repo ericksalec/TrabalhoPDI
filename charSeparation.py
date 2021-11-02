@@ -3,7 +3,8 @@ import glob
 from imutils.contours import sort_contours
 import imutils
 import cv2
-
+from svm import svmClassify
+from nn import nnClassify
 
 def removeAntigas():
 	# Cria o diretório caso não exista
@@ -67,7 +68,7 @@ def separa(image):
 			padded = cv2.resize(padded, (28, 28))
 			cv2.imwrite("./imagens/y=" + str(y) + "-h=" + str(h) + "-x=" + str(x) + "-w=" + str(w) + ".jpg", padded)
 
-def marcacaoDaImg(image):
+def marcacaoDaImgSVM(image):
 	croppedimg, croppedImgPaths = getImageAndNames()
 	borderSize = 40
 	padded2 = cv2.copyMakeBorder(image, top=borderSize, bottom=borderSize,
@@ -76,15 +77,32 @@ def marcacaoDaImg(image):
 
 	i = 0;
 	for name in croppedImgPaths:
-		value = i
-		#value = funçãoPraReconheceraIMG(croppedimg ou croppedImgPaths) deve retonar um numero inteiro como resultado
-		arr = ((name.replace("./imagens/y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
-		(y , h, x, w) = [int(numeric_string) for numeric_string in arr]
+		value = svmClassify(name)
+		arr = ((name.replace("./imagens\\y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
+		(y, h, x, w) = [int(numeric_string) for numeric_string in arr]
 		print((y, h, x, w))
 		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 255, 0), 2)
 		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-		i += 1
 
-	cv2.imshow("Image", padded2)
+	cv2.imshow("Predicao SVM", padded2)
+	cv2.waitKey(0)
+
+def marcacaoDaImgNN(image):
+	croppedimg, croppedImgPaths = getImageAndNames()
+	borderSize = 40
+	padded2 = cv2.copyMakeBorder(image, top=borderSize, bottom=borderSize,
+								 left=borderSize, right=borderSize, borderType=cv2.BORDER_CONSTANT,
+								 value=(255, 255, 255, 255))
+
+	i = 0;
+	for name in croppedImgPaths:
+		value = nnClassify(name)
+		arr = ((name.replace("./imagens\\y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
+		(y, h, x, w) = [int(numeric_string) for numeric_string in arr]
+		print((y, h, x, w))
+		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 255, 0), 2)
+		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
+
+	cv2.imshow("Predicao Rede Neural", padded2)
 	cv2.waitKey(0)
 

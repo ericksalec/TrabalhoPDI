@@ -16,8 +16,8 @@ import confusion_matrix as conf
 
 def svmtrain():
     #Fazendo a leitura da base em formato CSV com auxilio da biblioteca pandas
-    train_data = pd.read_csv("database/mnist_full.csv", sep=',')
-    #train_data = pd.read_csv("database/mnist_small.csv", sep=',')
+    #train_data = pd.read_csv("database/mnist_full.csv", sep=',')
+    train_data = pd.read_csv("database/mnist_small.csv", sep=',')
 
     #Separando as variáveis X e Y
     #Y fica responsável pela as labels do dados

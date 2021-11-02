@@ -6,11 +6,9 @@ import unicodedata
 import nn
 from tkinter import messagebox
 from charSeparation import separa
+from charSeparation import marcacaoDaImgNN
+from charSeparation import marcacaoDaImgSVM
 import svm
-
-#Libs usadas para os testes:
-
-#Fim libs usadas para teste
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
@@ -23,7 +21,7 @@ def pathImage():
     enteredImage = True
     hasBaseImage = True
     baseImage = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
-    #separa(baseImage)
+    separa(baseImage)
     app = MainWindow(group1, filepath)
 
 
@@ -33,8 +31,7 @@ def pathSair():
 def pathClassifyNN():
     if enteredImage:
         if nnTrained:
-            digito = nn.nnclassify(filepath)
-            print(digito)
+            marcacaoDaImgNN(baseImage)
         else:
             messagebox.showerror("Erro", "Execute o treinamento primeiro")
     else:
@@ -44,8 +41,7 @@ def pathClassifyNN():
 def pathClassifySVM():
     if svmTrained:
         if enteredImage:
-            digito = svm.svmClassify(filepath)
-            print(digito)
+            marcacaoDaImgSVM(baseImage)
         else:
             messagebox.showerror("Erro", "Abra uma imagem primeiro")
     else:
@@ -54,7 +50,7 @@ def pathClassifySVM():
 
 def pathTrainNN():
     global nnTrained
-    nnTrained = nn.nntrain()
+    nnTrained = nn.nnTrain()
     return
 
 def pathTrainSVM():
