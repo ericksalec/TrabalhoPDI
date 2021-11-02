@@ -16,8 +16,8 @@ import confusion_matrix as conf
 
 def svmtrain():
     #Fazendo a leitura da base em formato CSV com auxilio da biblioteca pandas
-    train_data = pd.read_csv("database/mnist_full.csv", sep=',')
-    #train_data = pd.read_csv("database/mnist_small.csv", sep=',')
+    #train_data = pd.read_csv("database/mnist_full.csv", sep=',')
+    train_data = pd.read_csv("database/mnist_small.csv", sep=',')
 
     #Separando as variáveis X e Y
     #Y fica responsável pela as labels do dados
@@ -104,5 +104,6 @@ def svmClassify(filepath):
     image_predict = pd.read_csv("database/hand_check.csv", sep=',', index_col=0)
     svm = pickle.load(open("models/svm.sav", 'rb'))
     predicao = svm.predict(image_predict)
+    predicao = predicao.item(0)
     return predicao
 

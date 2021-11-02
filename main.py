@@ -6,26 +6,30 @@ import unicodedata
 import nn
 from tkinter import messagebox
 from charSeparation import separa
+from charSeparation import marcacaoDaImgNN
+from charSeparation import marcacaoDaImgSVM
 import svm
-
-#Libs usadas para os testes:
-
-#Fim libs usadas para teste
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
-    uni_img = easygui.fileopenbox()
+    uni_img = easygui.fileopenbox(default='*.png', filetypes=["All Files","*.png","*.PNG", "*.jpg", "*.JPG"], multiple=False)
+
     try:
         filepath = unicodedata.normalize('NFKD', uni_img).encode('ascii', 'ignore')
     except:
         return
-    filepath = filepath.decode('utf-8')
-    enteredImage = True
-    hasBaseImage = True
-    baseImage = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
-    #separa(baseImage)
-    app = MainWindow(group1, filepath)
 
+    filepath = filepath.decode('utf-8')
+
+    if filepath.endswith(".png") or filepath.endswith(".PNG") or filepath.endswith(".jpg") or filepath.endswith(".JPG"):
+        enteredImage = True
+        hasBaseImage = True
+        baseImage = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
+        separa(baseImage)
+        app = MainWindow(group1, filepath)
+    else:
+        messagebox.showerror("Erro", "Formato Arquivo não suportado!")
+        return
 
 def pathSair():
     master_window.destroy()
@@ -33,8 +37,7 @@ def pathSair():
 def pathClassifyNN():
     if enteredImage:
         if nnTrained:
-            digito = nn.nnclassify(filepath)
-            print(digito)
+            marcacaoDaImgNN(baseImage)
         else:
             messagebox.showerror("Erro", "Execute o treinamento primeiro")
     else:
@@ -44,8 +47,7 @@ def pathClassifyNN():
 def pathClassifySVM():
     if svmTrained:
         if enteredImage:
-            digito = svm.svmClassify(filepath)
-            print(digito)
+            marcacaoDaImgSVM(baseImage)
         else:
             messagebox.showerror("Erro", "Abra uma imagem primeiro")
     else:
@@ -54,7 +56,7 @@ def pathClassifySVM():
 
 def pathTrainNN():
     global nnTrained
-    nnTrained = nn.nntrain()
+    nnTrained = nn.nnTrain()
     return
 
 def pathTrainSVM():

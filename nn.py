@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-def nntrain():
+def nnTrain():
     #Carrega a base de dados MNIST internamente pela biblioteca tensorflow
     mnist = tf.keras.datasets.mnist
     #Separa os dados da base para treino e para teste
@@ -40,7 +40,7 @@ def nntrain():
 
     return True
 
-def nnclassify(filepath):
+def nnClassify(filepath):
     test_image = cv2.imread(filepath)[:, :, 0]
     test_image = np.invert(np.array([test_image]))
     model = tf.keras.models.load_model('nn.model')
