@@ -18,6 +18,10 @@ def removeAntigas():
 		os.remove(f)
 
 def getImageAndNames():
+	#Para normalizar o filepath entre sistemas operacionais
+	#filepath = unicodedata.normalize('NFKD', uni_img).encode('ascii', 'ignore')
+	#filepath = filepath.decode('utf-8')
+
 	files = glob.glob('./imagens/*')
 	imgNames = []
 	loadedImgs = []
@@ -78,11 +82,11 @@ def marcacaoDaImgSVM(image):
 	i = 0;
 	for name in croppedImgPaths:
 		value = svmClassify(name)
+		#Em geral o caminho de leitura no linux é diferente
 		arr = ((name.replace("./imagens\\y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
 		(y, h, x, w) = [int(numeric_string) for numeric_string in arr]
-		print((y, h, x, w))
-		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 255, 0), 2)
-		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
+		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 0, 240), 1)
+		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (240, 0, 0), 2)
 
 	cv2.imshow("Predicao SVM", padded2)
 	cv2.waitKey(0)
