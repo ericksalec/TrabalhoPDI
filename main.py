@@ -23,7 +23,7 @@ def pathImage():
     enteredImage = True
     hasBaseImage = True
     baseImage = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
-    separa(baseImage)
+    #separa(baseImage)
     app = MainWindow(group1, filepath)
 
 
@@ -42,13 +42,14 @@ def pathClassifyNN():
     return
 
 def pathClassifySVM():
-    if enteredImage:
-        if svmTrained:
-            messagebox.showerror("Erro", "Ainda não foi criado modelo de previsão")
+    if svmTrained:
+        if enteredImage:
+            digito = svm.svmClassify(filepath)
+            print(digito)
         else:
-            messagebox.showerror("Erro", "Execute o treinamento primeiro")
+            messagebox.showerror("Erro", "Abra uma imagem primeiro")
     else:
-        messagebox.showerror("Erro", "Abra uma imagem primeiro")
+        messagebox.showerror("Erro","Execute o treinamento primeiro")
     return
 
 def pathTrainNN():
