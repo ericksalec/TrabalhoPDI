@@ -83,7 +83,13 @@ def marcacaoDaImgSVM(image):
 	for name in croppedImgPaths:
 		value = svmClassify(name)
 		#Em geral o caminho de leitura no linux é diferente
-		arr = ((name.replace("./imagens\\y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
+		arr = ((name.replace("./imagens/y=", ""))
+			   .replace("./imagens\\y=", "")
+			   .replace("h=", "")
+			   .replace("x=", "")
+			   .replace("w=", "")
+			   .replace(".jpg", "")
+			   .split("-"))
 		(y, h, x, w) = [int(numeric_string) for numeric_string in arr]
 		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 0, 240), 1)
 		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (240, 0, 0), 2)
@@ -99,10 +105,15 @@ def marcacaoDaImgNN(image):
 
 	for name in croppedImgPaths:
 		value = nnClassify(name)
-		arr = ((name.replace("./imagens\\y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
+		arr = ((name.replace("./imagens/y=", ""))
+			   .replace("./imagens\\y=", "")
+			   .replace("h=", "")
+			   .replace("x=", "")
+			   .replace("w=", "")
+			   .replace(".jpg", "")
+			   .split("-"))
 		(y, h, x, w) = [int(numeric_string) for numeric_string in arr]
 		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 0, 240), 1)
 		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (240, 0, 0), 2)
 
 	cv2.imshow("Predicao Rede Neural", padded2)
-
