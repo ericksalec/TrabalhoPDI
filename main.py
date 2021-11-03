@@ -123,8 +123,6 @@ opcoesClassificacao.add_command(label="Rede Neural", command=pathClassifyNN)
 opcoesTreinamento = tk.Menu(menubar, tearoff=0)
 opcoesTreinamento.add_command(label='SVM', command=pathTrainSVM)
 opcoesTreinamento.add_command(label="Rede Neural", command=pathTrainNN)
-opcoesTreinamento.add_command(label="Projecao", command=pathProjecao)
-
 
 opcoesOCR = tk.Menu(menubar, tearoff=0)
 opcoesOCR.add_cascade(label="Classificar", menu=opcoesClassificacao)

@@ -10,9 +10,8 @@ def projecao(pathImage=None, name = 0):
 
 	#Leia a imagem e substitua-a por uma matriz operacional
 	img=cv2.imread(pathImage, cv2.IMREAD_GRAYSCALE)
-	#Converter imagem BGR para imagem em tons de cinza
-	#Alterar os pontos entre a binarização da imagem (130255) a 255 (plano de fundo)
-	ret,proj_vertical=cv2.threshold(img,130,255,cv2.THRESH_BINARY)
+	#Alterar os pontos entre a binarização da imagem e plano de fundo
+	ret,proj_vertical=cv2.threshold(img,0,255,cv2.THRESH_BINARY)
 	proj_vertical_arr = proj_vertical
 
 	#Retornar altura e largura
@@ -58,7 +57,7 @@ def projecao(pathImage=None, name = 0):
 	img_concat = np.hstack((img, proj_concat))
 	#Salva a projecao
 	cv2.imwrite("./projecoes/" + str(name) + ".jpg", img_concat)
-	return img_concat
+	return proj_concat
 
 #Exibe as projecoes concatenadas me tela
 def printProjecao():
@@ -71,8 +70,9 @@ def printProjecao():
 		projecoes = projecao(img, name)
 		name = name + 1
 	proj, pathProj = getProjAndNames()
-
 	output =  concat_n_images(pathProj)
+
+	#Funcoes auxiliares para imprimir projecao na tela
 	#cv2.imshow("Projecoes", output)
 	#plt.imshow(output,cmap=plt.gray())
 	#plt.show()
