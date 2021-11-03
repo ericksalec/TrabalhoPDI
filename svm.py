@@ -1,23 +1,25 @@
+#Processamento de Imagens - 2021/02 - Erick Sales, Felipe Augusto, Helen Machado, Juan Luiz
+import time
 import pickle
-import pandas as pd
 import numpy as np
+import pandas as pd
 from PIL import Image
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn import metrics
+from tkinter import messagebox
+import confusion_matrix as conf
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import scale
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
-import confusion_matrix as conf
-
-
-
-
+from sklearn.model_selection import train_test_split
 
 def svmtrain():
+    # Marca o inicio do tempo de execução do treinamento
+    start = time.time()
     #Fazendo a leitura da base em formato CSV com auxilio da biblioteca pandas
-    #train_data = pd.read_csv("database/mnist_full.csv", sep=',')
-    train_data = pd.read_csv("database/mnist_small.csv", sep=',')
+    train_data = pd.read_csv("database/mnist_full.csv", sep=',')
+    #train_data = pd.read_csv("database/mnist_small.csv", sep=',')
 
     #Separando as variáveis X e Y
     #Y fica responsável pela as labels do dados
@@ -26,12 +28,19 @@ def svmtrain():
     X = train_data.drop(columns='label')
 
     #Normalizando os pixels da base
-    #X = X/255.0
+    X = X/255.0
     #Padronizando os pixels da base
     #X_scaled = scale(X)
 
     #Divisão da base no conjunto de teste e no conjunto de treino aleatoriamente
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, train_size=0.2, random_state=10, stratify=y)
+
+    #Plota um digito da base
+    #digit = train_data.iloc[3, 1:]
+    #digit.shape
+    #digit = digit.values.reshape(28, 28)
+    #plt.imshow(digit, cmap='gray')
+    #plt.title("Digit Example")
 
     #Inicio da busca dos possíveis melhores hyperparametros para o modelo:
 
@@ -71,6 +80,16 @@ def svmtrain():
     #Usa o modelo criado para prever os resultados do conjunto de teste
     y_pred = model.predict(X_test)
 
+    # Salva o modelo criado para uso posterior
+    pickle.dump(model, open("models/svm.sav", 'wb'))
+
+    # Marca o fim do tempo de  treinamento
+    end = time.time()
+    # Calcula quanto tempo demorou o treinamento e exibe uma msgbox informando esse tempo para o usuário
+    executionTime = end - start
+    tempo = str(executionTime) + " segundos "
+    messagebox.showinfo(title="Tempo de Treinamento NN", message=tempo)
+
     #Calcula a acurácia do modelo criado comparando os valores das labels previstas com as corretas
     acuracy = "\nAcurácia = " + str(metrics.accuracy_score(y_test, y_pred)) + "\n"
     type = "SVM"
@@ -79,8 +98,6 @@ def svmtrain():
     conf_matrix = metrics.confusion_matrix(y_true=y_test, y_pred=y_pred)
     conf.plot(conf_matrix, acuracy, type)
 
-    #Salva o modelo criado para uso posterior
-    pickle.dump(model, open("models/svm.sav", 'wb'))
     return True
 
 def svmClassify(filepath):

@@ -1,10 +1,11 @@
+#Processamento de Imagens - 2021/02 - Erick Sales, Felipe Augusto, Helen Machado, Juan Luiz
 import os
-import glob
-from imutils.contours import sort_contours
-import imutils
 import cv2
-from svm import svmClassify
+import glob
+import imutils
 from nn import nnClassify
+from svm import svmClassify
+from imutils.contours import sort_contours
 
 def removeAntigas():
 	# Cria o diretório caso não exista
@@ -79,7 +80,6 @@ def marcacaoDaImgSVM(image):
 								 left=borderSize, right=borderSize, borderType=cv2.BORDER_CONSTANT,
 								 value=(255, 255, 255, 255))
 
-	i = 0;
 	for name in croppedImgPaths:
 		value = svmClassify(name)
 		#Em geral o caminho de leitura no linux é diferente
@@ -89,7 +89,6 @@ def marcacaoDaImgSVM(image):
 		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (240, 0, 0), 2)
 
 	cv2.imshow("Predicao SVM", padded2)
-	cv2.waitKey(0)
 
 def marcacaoDaImgNN(image):
 	croppedimg, croppedImgPaths = getImageAndNames()
@@ -98,15 +97,12 @@ def marcacaoDaImgNN(image):
 								 left=borderSize, right=borderSize, borderType=cv2.BORDER_CONSTANT,
 								 value=(255, 255, 255, 255))
 
-	i = 0;
 	for name in croppedImgPaths:
 		value = nnClassify(name)
 		arr = ((name.replace("./imagens\\y=", "")).replace("h=", "").replace("x=", "").replace("w=", "").replace(".jpg","").split("-"))
 		(y, h, x, w) = [int(numeric_string) for numeric_string in arr]
-		print((y, h, x, w))
-		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 255, 0), 2)
-		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
+		cv2.rectangle(padded2, (x + borderSize, y + borderSize), (x + w + borderSize, y + h + borderSize), (0, 0, 240), 1)
+		cv2.putText(padded2, str(value), (borderSize + x - 10, borderSize + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (240, 0, 0), 2)
 
 	cv2.imshow("Predicao Rede Neural", padded2)
-	cv2.waitKey(0)
 

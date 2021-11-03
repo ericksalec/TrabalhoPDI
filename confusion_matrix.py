@@ -1,3 +1,4 @@
+#Processamento de Imagens - 2021/02 - Erick Sales, Felipe Augusto, Helen Machado, Juan Luiz
 import matplotlib.pyplot as plt
 
 def plot(conf_matrix,acuracy,type):
