@@ -6,6 +6,8 @@ import easygui
 import unicodedata
 import cv2 as cv2
 import tkinter as tk
+
+import projecao
 from zoom import MainWindow
 from tkinter import messagebox
 from charSeparation import separa
@@ -77,6 +79,11 @@ def pathTrainSVM():
     svmTrained = svm.svmtrain()
     return
 
+def pathProjecao():
+    projecao.printProjecao()
+    messagebox.showinfo("Sucesso!", "Projeções Geradas com sucesso.")
+    return
+
 filepath = 'dot.png'
 baseImage = cv2.imread('dot.png', cv2.IMREAD_UNCHANGED)
 enteredImage = False
@@ -103,6 +110,21 @@ opcoesClassificacao.add_command(label="Rede Neural", command=pathClassifyNN)
 opcoesTreinamento = tk.Menu(menubar, tearoff=0)
 opcoesTreinamento.add_command(label='SVM', command=pathTrainSVM)
 opcoesTreinamento.add_command(label="Rede Neural", command=pathTrainNN)
+
+opcoesProj = tk.Menu(menubar, tearoff=0)
+menubar.add_cascade(label="Projeção", menu=opcoesProj)
+opcoesProj.add_command(label="Gerar projeções", command=pathProjecao)
+
+
+opcoesClassificacao = tk.Menu(menubar, tearoff=0)
+opcoesClassificacao.add_command(label='SVM', command=pathClassifySVM)
+opcoesClassificacao.add_command(label="Rede Neural", command=pathClassifyNN)
+
+opcoesTreinamento = tk.Menu(menubar, tearoff=0)
+opcoesTreinamento.add_command(label='SVM', command=pathTrainSVM)
+opcoesTreinamento.add_command(label="Rede Neural", command=pathTrainNN)
+opcoesTreinamento.add_command(label="Projecao", command=pathProjecao)
+
 
 opcoesOCR = tk.Menu(menubar, tearoff=0)
 opcoesOCR.add_cascade(label="Classificar", menu=opcoesClassificacao)
