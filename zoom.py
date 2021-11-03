@@ -1,8 +1,9 @@
+#Processamento de Imagens - 2021/02 - Erick Sales, Felipe Augusto, Helen Machado, Juan Luiz
+import math
+import warnings
+import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-import tkinter as tk
-import warnings
-import math
 
 class AutoScrollbar(ttk.Scrollbar):
     # Uma barra de scroll que se esconde se não for necessária

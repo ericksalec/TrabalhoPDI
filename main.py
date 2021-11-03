@@ -1,14 +1,17 @@
+#Processamento de Imagens - 2021/02 - Erick Sales, Felipe Augusto, Helen Machado, Juan Luiz
+import nn
+import svm
+import time
+import easygui
+import unicodedata
 import cv2 as cv2
 import tkinter as tk
 from zoom import MainWindow
-import easygui
-import unicodedata
-import nn
 from tkinter import messagebox
 from charSeparation import separa
 from charSeparation import marcacaoDaImgNN
 from charSeparation import marcacaoDaImgSVM
-import svm
+
 
 def pathImage():
     global filepath, enteredImage, baseImage, hasBaseImage, app
@@ -37,7 +40,12 @@ def pathSair():
 def pathClassifyNN():
     if enteredImage:
         if nnTrained:
+            start = time.time()
             marcacaoDaImgNN(baseImage)
+            end = time.time()
+            executionTime = end - start
+            tempo = str(executionTime) +" segundos "
+            messagebox.showinfo(title="Tempo de Classificação NN", message=tempo)
         else:
             messagebox.showerror("Erro", "Execute o treinamento primeiro")
     else:
@@ -47,7 +55,12 @@ def pathClassifyNN():
 def pathClassifySVM():
     if svmTrained:
         if enteredImage:
+            start = time.time()
             marcacaoDaImgSVM(baseImage)
+            end = time.time()
+            executionTime = end - start
+            tempo = str(executionTime) + " segundos "
+            messagebox.showinfo(title="Tempo de Classificação SVM", message=tempo)
         else:
             messagebox.showerror("Erro", "Abra uma imagem primeiro")
     else:
